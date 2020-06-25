@@ -1855,10 +1855,13 @@ class JIRA(object):
                 raise JIRAError("Invalid transition name. %s" % transition)
 
         data = {"transition": {"id": transitionId}}
+        update_dict = {}
         if comment:
-            data["update"] = {"comment": [{"add": {"body": comment}}]}
+            update_dict["comment"] = [{"add": {"body": comment}}]
         if worklog:
-            data["update"] = {"worklog": [{"add": {"timeSpent": worklog}}]}
+            update_dict["worklog"] = [{"add": {"timeSpent": worklog}}]
+        if comment or worklog:
+            data["update"] = update_dict
         if fields is not None:
             data["fields"] = fields
         else:
